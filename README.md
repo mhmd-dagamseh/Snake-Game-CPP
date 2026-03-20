@@ -89,7 +89,7 @@
 <h2>📷 Preview</h2>
 
 <p align="center">
-  <img src="https://via.placeholder.com/600x300?text=Snake+Game+Preview">
+  <img src="https://c.top4top.io/p_3731q6lbe1.png">
 </p>
 
 <hr>

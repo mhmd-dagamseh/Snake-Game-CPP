@@ -1,0 +1,371 @@
+#include <iostream>
+#include <conio.h>
+#include <cstdlib>
+#include <ctime>
+#include <string>
+#include <iomanip>
+#include <windows.h>
+#include <limits>
+using namespace std;
+// global variables
+int x, y;
+char positionW[25][50];
+string N;
+string E;
+string U;
+string P;
+float A;
+char Answer;
+
+int randomX()
+
+{
+    return rand() % 48 + 1;
+}
+
+int randomY()
+{
+    return rand() % 23 + 1;
+}
+
+
+class snake {
+private:
+    string nickname;
+    string email;
+    string username;
+    string password;
+    float age;
+    int heart;
+    int points;
+    char body[50];
+    int positionX,
+        positionY;
+public:
+    snake(string n, string e, string u, string p, float a, int H, int P, char B, int Y, int X)
+    {
+        age = a;
+        nickname = n;
+        username = u;
+        password = p;
+        email = e;
+        heart = H;
+        points = P;
+        body[0] = B;
+        positionY = Y;
+        positionX = X;
+    }
+    ~snake()
+    {
+
+    }
+    void end() {
+        system("cls");
+        cout << "\n\n\n";
+        cout << "____    _    __  __ _____    _____     _______ ____" << endl;
+        cout << "/ ___|  / \\  |  \\/  | ____|  / _ \\ \\   / / ____|  _ \\" << endl;
+        cout << "| |  _  / _ \\ | |\\/| |  _|   | | | \\ \\ / /|  _| | |_) |" << endl;
+        cout << "| |_| |/ ___ \\| |  | | |___  | |_| |\\ V / | |___|  _ <" << endl;
+        cout << " \\____/_/   \\_\\_|  |_|_____|  \\___/  \\_/  |_____|_| \\_\\" << endl;
+        cout << "\n\n\n";
+    }
+
+    void moveUp() {
+        positionY--;
+    }
+    void moveDown() {
+        positionY++;
+    }
+    void moveRight() {
+        positionX++;
+    }
+    void moveLeft() {
+        positionX--;
+    }
+    int printP() {
+        return points;
+
+    }
+    int  heartP() {
+        return heart;
+
+    }
+
+    int heartM() {
+        return heart--;
+    }
+    int heartA() {
+        return heart++;
+    }
+    int pointA() {
+        return points++;
+    }
+    int pointM() {
+        return points--;
+    }
+    int newHeart() {
+        if (points >= 5) {
+            points = 0;
+            return heart++;
+        }
+        return heart;
+    }
+
+    int getX() { return positionX; }
+    int getY() { return positionY; }
+};
+class food {
+private:
+    int positionX;
+    int positionY;
+public:
+    food()
+    {
+        positionX = randomX();
+        positionY = randomY();
+    }
+    int resit_pos() {
+        positionX = randomX();
+        positionY = randomY();
+        return (positionX, positionY);
+    }
+    int getX() { return positionX; }
+    int getY() { return positionY; }
+};
+snake* Player;
+void GameLoop();
+void Login();
+void rePassword();
+void updateAndDraw();
+
+
+void Register() {
+    cout << "\n\n";
+    cout << "========================================\n";
+    cout << "||      SNAKE GAME REGISTRATION       ||\n";
+    cout << "========================================\n\n";
+    cout << "Enter Ur Full Nickname : ";
+    cin.ignore();
+    getline(cin, N);
+    cout << "\nEnter Ur Age : ";
+    cin >> A;
+    cout << "\nEnter Ur Email : ";
+    cin >> E;
+    cout << "\nEnter Ur Username: ";
+    cin >> U;
+    cout << "\nEnter Ur Password : ";
+    cin >> P;
+
+    system("cls");
+
+    cout << "\n\n";
+    cout << "===========================================\n";
+    cout << "||           USER PROFILE                ||\n";
+    cout << "===========================================\n";
+    cout << "||                                       ||\n";
+    cout << "||  01. FULL NAME  : " << setw(20) << left << N << "||\n";
+    cout << "||  02. AGE        : " << setw(20) << left << A << "||\n";
+    cout << "||  03. EMAIL      : " << setw(20) << left << E << "||\n";
+    cout << "||  04. USERNAME   : " << setw(20) << left << U << "||\n";
+    cout << "||  05. PASSWORD   : " << setw(20) << left << string(P.length(), '*') << "||\n";
+    cout << "||                                       ||\n";
+    cout << "===========================================\n";
+    cout << "||       REGISTRATION SUCCESSFUL         ||\n";
+    cout << "===========================================\n";
+    cout << "\n\n";
+    Player = new snake(N, E, U, P, A, 3, 1, '*', 12, 25);
+    Sleep(5000);
+    system("cls");
+    Login();
+
+}
+
+food Humming;
+void GameLoop()
+{
+    x = 25, y = 12;
+    updateAndDraw();
+
+    while (true)
+    {
+
+        if (_kbhit()) {
+            char input = _getch();
+            if (input == 27)
+            {
+                break;
+            }
+            else if (Player->heartP() <= 0) {
+                Player->end();
+                break;
+            }
+            else if (input == 'w' || input == 'W') {
+                Player->moveUp();
+            }
+            else if (input == 's' || input == 'S') {
+                Player->moveDown();
+            }
+            else if (input == 'a' || input == 'A') {
+                Player->moveLeft();
+            }
+            else if (input == 'd' || input == 'D') {
+                Player->moveRight();
+            }
+            updateAndDraw();
+        }
+
+    }
+
+}
+void rePassword() {
+    string e;
+    string u;
+    string p;
+    float a;
+    system("cls");
+    cout << "\n\n";
+    cout << "=====================================\n";
+    cout << "||      SNAKE GAME REPASSWORD      ||\n";
+    cout << "=====================================\n\n";
+    cout << "Answer your security questions to recover your account.\n Enter Ur Username : ";
+    cin >> u;
+    if (u == U) {
+        cout << "\nEnter Ur Age";
+        cin >> a;
+        if (a == A) {
+            cout << "\nEnter Ur E-Mail";
+            cin >> e;
+            if (e == E) {
+                cout << "\n\n";
+                cout << " ____  _   _  ____ ____ _____ ____ ____  _____ _   _ _     _  __   __" << endl;
+                cout << "/ ___|| | | |/ ___/ ___| ____/ ___/ ___||  ___| | | | |   | | \\ \\ / /" << endl;
+                cout << "\\___ \\| | | | |  | |   |  _| \\___ \\___ \\| |_  | | | | |   | |  \\ V /" << endl;
+                cout << " ___) | |_| | |__| |___| |___ ___) |__) |  _| | |_| | |___| |___| |" << endl;
+                cout << "|____/ \\___/ \\____\\____|_____|____/____/|_|    \\___/|_____|_____|_|" << endl;
+                Sleep(3000);
+                system("cls");
+                cout << "Enter Ur New Password : ";
+                cin >> P;
+                system("cls");
+                Login();
+            }
+        }
+    }
+}
+
+
+void Login() {
+    string u;
+    string p;
+    system("cls");
+    cout << "\n\n";
+    cout << "================================\n";
+    cout << "||      SNAKE GAME LOGIN      ||\n";
+    cout << "================================\n\n";
+    cout << "Enter Ur Username : ";
+    cin >> u;
+    if (u == U) {
+        cout << "Enter Ur Password : ";
+        cin >> p;
+        if (p == P) {
+            cout << "_     ___   ____ ___ _   _" << endl;
+            cout << "| |   / _ \\ / ___|_ _| \\ | |" << endl;
+            cout << "| |  | | | | |  _ | ||  \\| |" << endl;
+            cout << "| |__| |_| | |_| || || |\\  |" << endl;
+            cout << "|_____\\___/ \\____|___|_| \\_|" << endl;
+            cout << endl;
+            cout << " ____  _   _  ____ ____ _____ ____ ____  _____ _   _ _     _  __   __" << endl;
+            cout << "/ ___|| | | |/ ___/ ___| ____/ ___/ ___||  ___| | | | |   | | \\ \\ / /" << endl;
+            cout << "\\___ \\| | | | |  | |   |  _| \\___ \\___ \\| |_  | | | | |   | |  \\ V /" << endl;
+            cout << " ___) | |_| | |__| |___| |___ ___) |__) |  _| | |_| | |___| |___| |" << endl;
+            cout << "|____/ \\___/ \\____\\____|_____|____/____/|_|    \\___/|_____|_____|_|" << endl;
+            Sleep(3000);
+            system("cls");
+            GameLoop();
+        }
+        else {
+            rePassword();
+        }
+    }
+    else {
+        cout << "Do U Have An Account ? [Y/N] : ";
+        cin >> Answer;
+        if (Answer == 'Y' || Answer == 'y') {
+            system("cls");
+            Login();
+        }
+        else if (Answer == 'N' || Answer == 'n') {
+            system("cls");
+            Register();
+        }
+    }
+
+}
+void updateAndDraw()
+{
+    system("cls");
+
+    for (int y = 0; y < 25; y++)
+    {
+        for (int x = 0; x < 50; x++)
+        {
+            if (y == 0 || y == 24)
+            {
+                cout << "-";
+            }
+            else if (x == 0 || x == 49)
+            {
+                cout << "|";
+            }
+            else if (y == Player->getY() && x == Player->getX())
+            {
+                cout << "*";
+            }
+            else if (y == Humming.getY() && x == Humming.getX())
+            {
+                cout << "#";
+            }
+            else
+            {
+                cout << " ";
+            }
+        }
+        cout << "\n";
+    }
+    if (Player->getX() == 0 || Player->getX() == 49 ||
+        Player->getY() == 0 || Player->getY() == 24)
+    {
+        Player->heartM();
+    }
+    if (Player->getX() == Humming.getX() &&
+        Player->getY() == Humming.getY())
+    {
+        Player->pointA();
+        Humming.resit_pos();
+    }
+    Player->newHeart();
+    if (Player->heartP() <= 0) {
+       
+    }
+    cout << "Ur Points Is : " << Player->printP();
+    cout << "\nUr Hearts Is : " << Player->heartP();
+
+
+
+}
+
+
+
+void firstLogin() {
+
+    cout << "Hello, Welcome in my Snake Game...\nCreate A New Account To Play This Game ";
+    Sleep(3000);
+    system("cls");
+    Register();
+}
+int main()
+{
+    srand(static_cast<unsigned int>(time(0)));
+    firstLogin();
+    return 0;
+}
